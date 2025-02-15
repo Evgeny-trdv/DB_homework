@@ -25,12 +25,12 @@ public class StudentController {
     }
 
     @GetMapping("/{id}")
-    public Student getStudent(@PathVariable Long id) {
+    public ResponseEntity<Student> getStudent(@PathVariable Long id) {
         Student student = studentService.getStudent(id);
         if (student == null) {
-            throw new NotFoundStudentException();
+            ResponseEntity.notFound().build();
         }
-        return student;
+        return ResponseEntity.ok(student);
     }
 
     @PutMapping("/{id}")
