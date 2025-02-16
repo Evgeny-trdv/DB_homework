@@ -2,12 +2,12 @@ package ru.hogwarts.school.service.impl;
 
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.service.FacultyService;
 
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class FacultyServiceImpl implements FacultyService {
@@ -39,10 +39,32 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
     @Override
-    public List<Faculty> getListStudentByAge(String color) {
+    public List<Faculty> getListFacultyByColor(String color) {
         return facultyRepository.findAll()
                 .stream()
                 .filter(e -> e.getColor().equals(color))
                 .toList();
     }
+
+    @Override
+    public Collection<Faculty> getAllFaculties() {
+        return facultyRepository.findAll();
+    }
+
+    @Override
+    public Collection<Faculty> getListFacultiesByColor(String color) {
+        return facultyRepository.findFacultiesByColorIgnoreCase(color);
+    }
+
+    @Override
+    public Collection<Faculty> getListFacultiesByName(String name) {
+        return facultyRepository.findFacultiesByNameIgnoreCase(name);
+    }
+
+    @Override
+    public List<Student> getStudentsByFacultyId(Long facultyId) {
+        return facultyRepository.findById(facultyId).get().getStudents();
+    }
+
+
 }

@@ -3,19 +3,21 @@ package ru.hogwarts.school.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.hogwarts.school.exceptions.NotFoundFacultyException;
 import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.FacultyService;
+import ru.hogwarts.school.service.impl.FacultyServiceImpl;
 
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping("/faculties")
 public class FacultyController {
 
-    private final FacultyService facultyService;
+    private final FacultyServiceImpl facultyService;
 
-    public FacultyController(FacultyService facultyService) {
+    public FacultyController(FacultyServiceImpl facultyService) {
         this.facultyService = facultyService;
     }
 
@@ -47,8 +49,25 @@ public class FacultyController {
         facultyService.removeFaculty(id);
     }
 
-    @GetMapping("/by-color/{age}")
-    public Collection<Faculty> getListStudentByAge(@PathVariable String color) {
-        return facultyService.getListStudentByAge(color);
+    @GetMapping("/by-color/{color}")
+    public Collection<Faculty> getListFacultyByColor(@PathVariable String color) {
+        return facultyService.getListFacultyByColor(color);
+    }
+
+    @GetMapping
+    public Collection<Faculty> getListFaculties(@RequestParam(required = false) String color,
+                                                @RequestParam(required = false) String name) {
+        if (color != null && !color.isBlank()) {
+            return facultyService.getListFacultiesByColor(color);
+        }
+        if (name != null && !name.isBlank()) {
+            return facultyService.getListFacultiesByName(name);
+        }
+        return facultyService.getAllFaculties();
+    }
+
+    @GetMapping("/faculties-list/{facultyId}")
+    public List<Student> getStudentsByFacultyId(@PathVariable Long facultyId) {
+        return facultyService.getStudentsByFacultyId(facultyId);
     }
 }

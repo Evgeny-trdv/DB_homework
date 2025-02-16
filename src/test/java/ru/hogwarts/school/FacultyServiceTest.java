@@ -64,7 +64,7 @@ public class FacultyServiceTest {
                 createdFacultyFirst(),
                 createdFacultySecond()
         ));
-        Assertions.assertIterableEquals(facultyList, out.getListStudentByAge("red"));
+        Assertions.assertIterableEquals(facultyList, out.getListFacultyByColor("red"));
     }
 
 }
