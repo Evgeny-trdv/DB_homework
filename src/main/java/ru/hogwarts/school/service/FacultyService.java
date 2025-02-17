@@ -5,6 +5,7 @@ import ru.hogwarts.school.model.Student;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 public interface FacultyService {
     Faculty createFaculty(Faculty student);
@@ -23,5 +24,4 @@ public interface FacultyService {
 
     Collection<Faculty> getListFacultiesByName(String name);
 
-    List<Student> getStudentsByFacultyId(Long facultyId);
 }

@@ -5,11 +5,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
-import ru.hogwarts.school.service.FacultyService;
+import ru.hogwarts.school.repository.StudentRepository;
 import ru.hogwarts.school.service.impl.FacultyServiceImpl;
+import ru.hogwarts.school.service.impl.StudentServiceImpl;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/faculties")
@@ -17,7 +18,7 @@ public class FacultyController {
 
     private final FacultyServiceImpl facultyService;
 
-    public FacultyController(FacultyServiceImpl facultyService) {
+    public FacultyController(FacultyServiceImpl facultyService, StudentServiceImpl studentService, StudentRepository studentRepository) {
         this.facultyService = facultyService;
     }
 
@@ -49,11 +50,6 @@ public class FacultyController {
         facultyService.removeFaculty(id);
     }
 
-    @GetMapping("/by-color/{color}")
-    public Collection<Faculty> getListFacultyByColor(@PathVariable String color) {
-        return facultyService.getListFacultyByColor(color);
-    }
-
     @GetMapping
     public Collection<Faculty> getListFaculties(@RequestParam(required = false) String color,
                                                 @RequestParam(required = false) String name) {
@@ -66,8 +62,9 @@ public class FacultyController {
         return facultyService.getAllFaculties();
     }
 
-    @GetMapping("/faculties-list/{facultyId}")
-    public List<Student> getStudentsByFacultyId(@PathVariable Long facultyId) {
-        return facultyService.getStudentsByFacultyId(facultyId);
+    @GetMapping("/student/{studentId}")
+    public Faculty getFacultyByStudentId(@PathVariable Long studentId) {
+        return facultyService.getFacultyByStudentId(studentId);
     }
+
 }

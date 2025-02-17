@@ -51,8 +51,8 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Collection<Student> getAllStudents() {
-        return studentRepository.findAll();
+    public Collection<Student> findStudentsByFacultyId(Long facultyId) {
+        return studentRepository.findByFacultyId(facultyId);
     }
 
     @Override

@@ -18,6 +18,17 @@ public class Student {
     @JoinColumn(name = "faculty_id")
     private Faculty faculty;
 
+    public Student(String name, int age, Faculty faculty) {
+        id = 0L;
+        this.name = name;
+        this.age = age;
+        this.faculty = faculty;
+    }
+
+    public Student() {
+
+    }
+
     public Faculty getFaculty() {
         return faculty;
     }
