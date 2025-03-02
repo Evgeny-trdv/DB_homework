@@ -47,9 +47,9 @@ public class FacultyControllerTest {
 
     @Test
     public void testPostFaculty() throws Exception {
-        Faculty faculty = new Faculty("Music", "Pink", null);
+        Faculty facultyPost = new Faculty("Music", "Pink", null);
         Assertions.assertThat(restTemplate.postForObject("http://localhost:" + port
-                + "/faculties", faculty, Faculty.class)).isNotNull();
+                + "/faculties", facultyPost, Faculty.class)).isNotNull();
     }
 
     @Test

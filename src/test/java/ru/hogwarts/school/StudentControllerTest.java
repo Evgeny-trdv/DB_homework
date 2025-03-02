@@ -53,9 +53,9 @@ class StudentControllerTest {
 
 	@Test
 	public void testPostStudent() throws Exception {
-		Student student = new Student("John", 19, null, null);
+		Student studentPost = new Student("John", 19, null, null);
 		Assertions.assertThat(restTemplate.postForObject("http://localhost:" + port
-				+ "/students", student, Student.class)).isNotNull();
+				+ "/students", studentPost, Student.class)).isNotNull();
 	}
 
 	@Test
