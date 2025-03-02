@@ -1,6 +1,7 @@
 package ru.hogwarts.school.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Objects;
 
@@ -11,22 +12,37 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotNull
     private String name;
+
+    @NotNull
     private int age;
 
     @ManyToOne
     @JoinColumn(name = "faculty_id")
     private Faculty faculty;
 
-    public Student(String name, int age, Faculty faculty) {
+    @OneToOne(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Avatar avatar;
+
+    public Student(String name, int age, Faculty faculty, Avatar avatar) {
         id = 0L;
         this.name = name;
         this.age = age;
         this.faculty = faculty;
+        this.avatar = avatar;
     }
 
     public Student() {
 
+    }
+
+    public Avatar getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(Avatar avatar) {
+        this.avatar = avatar;
     }
 
     public Faculty getFaculty() {

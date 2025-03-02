@@ -8,10 +8,8 @@ import ru.hogwarts.school.repository.StudentRepository;
 import ru.hogwarts.school.service.FacultyService;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 public class FacultyServiceImpl implements FacultyService {
@@ -36,7 +34,16 @@ public class FacultyServiceImpl implements FacultyService {
 
     @Override
     public Faculty editFaculty(Long id, Faculty faculty) {
-        return facultyRepository.save(faculty);
+        Optional<Faculty> foundFaculty = facultyRepository.findById(id);
+        if (foundFaculty.isPresent()) {
+            Faculty updatedFaculty = foundFaculty.get();
+            updatedFaculty.setName(faculty.getName());
+            updatedFaculty.setColor(faculty.getColor());
+            updatedFaculty.setStudents(faculty.getStudents());
+            return facultyRepository.save(updatedFaculty);
+        } else {
+            throw new IllegalArgumentException("Faculty not found");
+        }
     }
 
     @Override
@@ -67,6 +74,7 @@ public class FacultyServiceImpl implements FacultyService {
         return facultyRepository.findFacultiesByNameIgnoreCase(name);
     }
 
+    @Override
     public Faculty getFacultyByStudentId(Long studentId) {
         return studentRepository.findById(studentId).get().getFaculty();
     }

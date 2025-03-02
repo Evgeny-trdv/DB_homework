@@ -19,6 +19,9 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Student createStudent(Student student) {
+        if (student.getName() == null || student.getName().isEmpty()) {
+            throw new IllegalArgumentException("Name cannot be empty");
+        }
         return studentRepository.save(student);
     }
 
@@ -29,7 +32,17 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Student editStudent(Long id, Student student) {
-        return studentRepository.save(student);
+        Optional<Student> foundStudent = studentRepository.findById(id);
+        if (foundStudent.isPresent()) {
+            Student updateStudent = foundStudent.get();
+            updateStudent.setName(student.getName());
+            updateStudent.setFaculty(student.getFaculty());
+            updateStudent.setAge(student.getAge());
+            updateStudent.setAvatar(student.getAvatar());
+            return studentRepository.save(updateStudent);
+        } else {
+            throw new IllegalArgumentException("Student not found");
+        }
     }
 
     @Override
@@ -43,6 +56,11 @@ public class StudentServiceImpl implements StudentService {
                 .stream()
                 .filter(e -> e.getAge() == age)
                 .toList();
+    }
+
+    @Override
+    public Collection<Student> getAllStudents() {
+        return studentRepository.findAll();
     }
 
     @Override

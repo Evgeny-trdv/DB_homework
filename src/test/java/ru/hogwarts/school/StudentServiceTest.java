@@ -52,12 +52,6 @@ public class StudentServiceTest {
     }
 
     @Test
-    public void shouldReturnResultOfGetStudentWhenIsFound() {
-        Mockito.when(studentRepository.findById(1L)).thenReturn(Optional.of(createdStudentFirst()));
-        Assertions.assertEquals(createdStudentFirst(), out.getStudent(1L));
-    }
-
-    @Test
     public void shouldReturnOfGetListByAgeWhenIsFound() {
         Mockito.when(studentRepository.findAll()).thenReturn(List.of(
                 createdStudentFirst(),

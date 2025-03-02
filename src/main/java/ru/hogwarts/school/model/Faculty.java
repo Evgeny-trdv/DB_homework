@@ -3,9 +3,8 @@ package ru.hogwarts.school.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -16,16 +15,31 @@ public class Faculty {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private  Long id;
 
+    @NotNull(message = "Название должно быть заполнено")
     private  String name;
+
+    @NotNull(message = "Цвет должен быть заполнен")
     private  String color;
 
     @OneToMany(mappedBy = "faculty", fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<Student> students;
 
+    public Faculty() {
+    }
+
+    public Faculty(String name, String color, Set<Student> students) {
+        id = 0L;
+        this.name = name;
+        this.color = color;
+        this.students = students;
+    }
+
     public Set<Student> getStudents() {
         return students;
     }
+
+    public void setStudents(Set<Student> students) {}
 
     public Long getId() {
         return id;
