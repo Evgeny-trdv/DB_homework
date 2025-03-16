@@ -20,6 +20,7 @@ public class Avatar {
     private String mediaType;
 
     @Lob
+    @JsonIgnore
     private byte[] preview;
 
     @OneToOne(cascade = CascadeType.ALL)
