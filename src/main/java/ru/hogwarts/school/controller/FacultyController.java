@@ -1,5 +1,6 @@
 package ru.hogwarts.school.controller;
 
+import org.apache.commons.collections4.Get;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,9 @@ import ru.hogwarts.school.service.impl.StudentServiceImpl;
 
 import java.util.Collection;
 import java.util.Set;
+import java.util.stream.IntStream;
+import java.util.stream.LongStream;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/faculties")
@@ -71,6 +75,25 @@ public class FacultyController {
     @GetMapping("/student/{studentId}")
     public Faculty getFacultyByStudentId(@PathVariable Long studentId) {
         return facultyService.getFacultyByStudentId(studentId);
+    }
+
+    @GetMapping("/get-faculty-with-lenghtest-name")
+    public String getFacultyWithLenghtestName() {
+        return facultyService.getFacultyWithLenghtestName();
+    }
+
+    @GetMapping("/parallel")
+    public Integer getInteger() {
+        long startTime = System.nanoTime();
+        int sum = IntStream.iterate(1, a -> a+1)
+                .parallel()
+                .limit(1_000_000)
+                .reduce(0, Integer::sum);
+
+        long endTime = System.nanoTime();
+        long duration = endTime - startTime;
+        System.out.println("Метод выполнился за " + (duration / 1_000_000) + " мс");
+        return sum;
     }
 
 }

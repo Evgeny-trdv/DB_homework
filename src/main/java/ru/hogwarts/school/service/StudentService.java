@@ -32,4 +32,8 @@ public interface StudentService {
     Integer getAverageAgeStudents();
 
     Collection<Student> getLastFiveStudents();
+
+    Collection<String> getNameStudentsStartingWith(String letter);
+
+    Integer getAverageAgeStudentByStreamApi();
 }

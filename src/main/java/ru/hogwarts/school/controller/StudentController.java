@@ -1,5 +1,6 @@
 package ru.hogwarts.school.controller;
 
+import org.apache.commons.collections4.Get;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -88,6 +89,16 @@ public class StudentController {
     @GetMapping("/last-five-student")
     public Collection<Student> getLastFiveStudents() {
         return studentService.getLastFiveStudents();
+    }
+
+    @GetMapping("/get-name-student-starting-with")
+    public Collection<String> getNameStudentsStartingWith(String letter) {
+        return studentService.getNameStudentsStartingWith(letter);
+    }
+
+    @GetMapping("/get-average-age-student")
+    public Integer getAverageAgeStudentByStreamApi() {
+        return studentService.getAverageAgeStudentByStreamApi();
     }
 
 }
