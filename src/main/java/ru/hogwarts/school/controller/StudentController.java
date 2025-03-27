@@ -4,8 +4,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.exceptions.NotFoundStudentException;
+import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
+import ru.hogwarts.school.service.impl.StudentServiceImpl;
 
 import java.util.Collection;
 
@@ -13,9 +15,9 @@ import java.util.Collection;
 @RequestMapping("/students")
 public class StudentController {
 
-    private final StudentService studentService;
+    private final StudentServiceImpl studentService;
 
-    public StudentController(StudentService studentService) {
+    public StudentController(StudentServiceImpl studentService) {
         this.studentService = studentService;
     }
 
@@ -25,12 +27,12 @@ public class StudentController {
     }
 
     @GetMapping("/{id}")
-    public Student getStudent(@PathVariable Long id) {
+    public ResponseEntity<Student> getStudent(@PathVariable Long id) {
         Student student = studentService.getStudent(id);
         if (student == null) {
-            throw new NotFoundStudentException();
+            ResponseEntity.notFound().build();
         }
-        return student;
+        return ResponseEntity.ok(student);
     }
 
     @PutMapping("/{id}")
@@ -51,4 +53,16 @@ public class StudentController {
     public Collection<Student> getListStudentByAge(@PathVariable int age) {
         return studentService.getListStudentByAge(age);
     }
+
+    @GetMapping("/by-age-between")
+    public Collection<Student> getListStudent(@RequestParam int minAge,
+                                              @RequestParam int maxAge) {
+        return studentService.getAllStudentsByAgeBetween(minAge, maxAge);
+    }
+
+    @GetMapping("/faculty/{facultyId}")
+    public Collection<Student> findStudentsByFacultyId(@PathVariable Long facultyId) {
+        return studentService.findStudentsByFacultyId(facultyId);
+    }
+
 }
