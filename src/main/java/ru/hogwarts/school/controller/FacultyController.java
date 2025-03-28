@@ -84,16 +84,7 @@ public class FacultyController {
 
     @GetMapping("/parallel")
     public Integer getInteger() {
-        long startTime = System.nanoTime();
-        int sum = IntStream.iterate(1, a -> a+1)
-                .parallel()
-                .limit(1_000_000)
-                .reduce(0, Integer::sum);
-
-        long endTime = System.nanoTime();
-        long duration = endTime - startTime;
-        System.out.println("Метод выполнился за " + (duration / 1_000_000) + " мс");
-        return sum;
+        return facultyService.getParallelAmount();
     }
 
 }

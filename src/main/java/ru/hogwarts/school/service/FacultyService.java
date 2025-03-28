@@ -25,4 +25,6 @@ public interface FacultyService {
     Faculty getFacultyByStudentId(Long studentId);
 
     String getFacultyWithLenghtestName();
+
+    Integer getParallelAmount();
 }

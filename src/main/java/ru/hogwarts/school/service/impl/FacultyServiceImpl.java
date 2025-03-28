@@ -11,6 +11,7 @@ import ru.hogwarts.school.service.FacultyService;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 @Service
 public class FacultyServiceImpl implements FacultyService {
@@ -93,5 +94,17 @@ public class FacultyServiceImpl implements FacultyService {
                 .findFirst().get();
     }
 
+    @Override
+    public Integer getParallelAmount() {
+        long startTime = System.nanoTime();
+        int sum = IntStream.iterate(1, a -> a+1)
+                .parallel()
+                .limit(1_000_000)
+                .reduce(0, Integer::sum);
 
+        long endTime = System.nanoTime();
+        long duration = endTime - startTime;
+        System.out.println("Метод выполнился за " + (duration / 1_000_000) + " мс");
+        return sum;
+    }
 }
