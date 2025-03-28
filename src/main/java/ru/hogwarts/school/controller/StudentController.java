@@ -1,5 +1,6 @@
 package ru.hogwarts.school.controller;
 
+import org.apache.commons.collections4.Get;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +16,9 @@ import java.util.Collection;
 @RequestMapping("/students")
 public class StudentController {
 
-    private final StudentServiceImpl studentService;
+    private final StudentService studentService;
 
-    public StudentController(StudentServiceImpl studentService) {
+    public StudentController(StudentService studentService) {
         this.studentService = studentService;
     }
 
@@ -35,6 +36,11 @@ public class StudentController {
         return ResponseEntity.ok(student);
     }
 
+    @GetMapping
+    public Collection<Student> getAllStudents() {
+        return studentService.getAllStudents();
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<Student> editStudent(@PathVariable Long id, @RequestBody Student student) {
         Student foundStudent = studentService.editStudent(id, student);
@@ -45,8 +51,13 @@ public class StudentController {
     }
 
     @DeleteMapping("/{id}")
-    public void removeStudent(@PathVariable Long id) {
+    public ResponseEntity<Void> removeStudent(@PathVariable Long id) {
+        Student student = studentService.getStudent(id);
+        if (student == null) {
+            ResponseEntity.notFound().build();
+        }
         studentService.removeStudent(id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/by-age/{age}")
@@ -63,6 +74,31 @@ public class StudentController {
     @GetMapping("/faculty/{facultyId}")
     public Collection<Student> findStudentsByFacultyId(@PathVariable Long facultyId) {
         return studentService.findStudentsByFacultyId(facultyId);
+    }
+
+    @GetMapping("/amount")
+    public Integer getAmountStudents() {
+        return studentService.getAmountStudents();
+    }
+
+    @GetMapping("/average-age")
+    public Integer getAverageAgeStudents() {
+        return studentService.getAverageAgeStudents();
+    }
+
+    @GetMapping("/last-five-student")
+    public Collection<Student> getLastFiveStudents() {
+        return studentService.getLastFiveStudents();
+    }
+
+    @GetMapping("/get-name-student-starting-with")
+    public Collection<String> getNameStudentsStartingWith(String letter) {
+        return studentService.getNameStudentsStartingWith(letter);
+    }
+
+    @GetMapping("/get-average-age-student")
+    public Integer getAverageAgeStudentByStreamApi() {
+        return studentService.getAverageAgeStudentByStreamApi();
     }
 
 }

@@ -17,6 +17,8 @@ public interface StudentService {
 
     List<Student> getListStudentByAge(int age);
 
+    Collection<Student> getAllStudents();
+
     Collection<Student> getAllStudentsByAgeBetween(int min, int max);
 
     //Collection<Student> getAllStudents();
@@ -24,4 +26,14 @@ public interface StudentService {
     Collection<Student> findStudentsByFacultyId(Long facultyId);
 
     Faculty getFacultyByStudentId(Long id);
+
+    Integer getAmountStudents();
+
+    Integer getAverageAgeStudents();
+
+    Collection<Student> getLastFiveStudents();
+
+    Collection<String> getNameStudentsStartingWith(String letter);
+
+    Integer getAverageAgeStudentByStreamApi();
 }

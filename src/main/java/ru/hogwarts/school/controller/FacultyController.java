@@ -1,30 +1,35 @@
 package ru.hogwarts.school.controller;
 
+import org.apache.commons.collections4.Get;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
+import ru.hogwarts.school.service.FacultyService;
 import ru.hogwarts.school.service.impl.FacultyServiceImpl;
 import ru.hogwarts.school.service.impl.StudentServiceImpl;
 
 import java.util.Collection;
 import java.util.Set;
+import java.util.stream.IntStream;
+import java.util.stream.LongStream;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/faculties")
 public class FacultyController {
 
-    private final FacultyServiceImpl facultyService;
+    private final FacultyService facultyService;
 
-    public FacultyController(FacultyServiceImpl facultyService, StudentServiceImpl studentService, StudentRepository studentRepository) {
+    public FacultyController(FacultyService facultyService) {
         this.facultyService = facultyService;
     }
 
     @PostMapping
-    public Faculty createFaculty(@RequestBody Faculty student) {
-        return facultyService.createFaculty(student);
+    public Faculty createFaculty(@RequestBody Faculty faculty) {
+        return facultyService.createFaculty(faculty);
     }
 
     @GetMapping("/{id}")
@@ -46,8 +51,13 @@ public class FacultyController {
     }
 
     @DeleteMapping("/{id}")
-    public void removeFaculty(@PathVariable Long id) {
+    public ResponseEntity<Faculty> removeFaculty(@PathVariable Long id) {
+        Faculty faculty = facultyService.getFaculty(id);
+        if (faculty == null) {
+            ResponseEntity.notFound().build();
+        }
         facultyService.removeFaculty(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @GetMapping
@@ -65,6 +75,16 @@ public class FacultyController {
     @GetMapping("/student/{studentId}")
     public Faculty getFacultyByStudentId(@PathVariable Long studentId) {
         return facultyService.getFacultyByStudentId(studentId);
+    }
+
+    @GetMapping("/get-faculty-with-lenghtest-name")
+    public String getFacultyWithLenghtestName() {
+        return facultyService.getFacultyWithLenghtestName();
+    }
+
+    @GetMapping("/parallel")
+    public Integer getInteger() {
+        return facultyService.getParallelAmount();
     }
 
 }

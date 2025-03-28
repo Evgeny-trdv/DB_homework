@@ -16,12 +16,15 @@ public interface FacultyService {
 
     void removeFaculty(Long id);
 
-    List<Faculty> getListFacultyByColor(String color);
-
     Collection<Faculty> getAllFaculties();
 
     Collection<Faculty> getListFacultiesByColor(String color);
 
     Collection<Faculty> getListFacultiesByName(String name);
 
+    Faculty getFacultyByStudentId(Long studentId);
+
+    String getFacultyWithLenghtestName();
+
+    Integer getParallelAmount();
 }
