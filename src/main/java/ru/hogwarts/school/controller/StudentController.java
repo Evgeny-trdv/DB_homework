@@ -90,4 +90,14 @@ public class StudentController {
         return studentService.getLastFiveStudents();
     }
 
+    @GetMapping("/students/print-parallel")
+    public void getNameStudentsPrintParallel() {
+        studentService.getNameStudentsPrintParallel();
+    }
+
+    @GetMapping("/students/print-synchronized")
+    public void getNameStudentsPrintSynchronized() {
+        studentService.getNameStudentsPrintSynchronized();
+    }
+
 }

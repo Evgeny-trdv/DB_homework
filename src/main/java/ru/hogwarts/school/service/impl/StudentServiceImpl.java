@@ -110,4 +110,47 @@ public class StudentServiceImpl implements StudentService {
         logger.info("Was invoked method get last five students");
         return studentRepository.getLastFiveStudents();
     }
+
+    @Override
+    public void getNameStudentsPrintParallel() {
+        studentRepository.findAll()
+                .stream()
+                .map(Student::getName)
+                .limit(3)
+                .forEach(System.out::println);
+
+        new Thread(() -> {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            studentRepository.findAll()
+                    .stream()
+                    .map(Student::getName)
+                    .skip(3)
+                    .limit(3)
+                    .forEach(System.out::println);
+        }).start();
+
+        new Thread(() -> {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            studentRepository.findAll()
+                    .stream()
+                    .map(Student::getName)
+                    .skip(6)
+                    .forEach(System.out::println);
+        }).start();
+    }
+
+    @Override
+    public void getNameStudentsPrintSynchronized() {
+        synchronized (StudentServiceImpl.class) {
+            getNameStudentsPrintParallel();
+        }
+    }
 }
